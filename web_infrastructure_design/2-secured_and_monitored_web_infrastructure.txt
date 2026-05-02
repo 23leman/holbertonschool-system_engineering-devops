@@ -1,0 +1,20 @@
+# 2-secured_and_monitored_web_infrastructure
+
+## Infrastructure Overview
+This infrastructure is a secured and monitored three-server setup. It serves encrypted traffic over HTTPS, uses firewalls to filter incoming requests, and includes monitoring clients to track system health and performance.
+
+## Why additional elements were added:
+* **Firewalls (x3)**: Added to protect each server by filtering incoming and outgoing network traffic based on security rules.
+* **SSL Certificate**: Added to enable HTTPS, ensuring that the data transferred between the user's browser and the web server is encrypted.
+* **Monitoring Clients (x3)**: Added to collect metrics and logs from each server to provide visibility into system performance and availability.
+
+## Specifics:
+* **Firewalls**: They act as a barrier between a trusted network and an untrusted network (like the Internet), blocking unauthorized access.
+* **HTTPS**: Traffic is served over HTTPS to provide security through encryption (SSL/TLS), protecting sensitive data from being intercepted by attackers.
+* **Monitoring**: Used to proactively identify issues, track uptime, and analyze performance trends. The monitoring tool collects data by installing a client on the server that sends system metrics (CPU, RAM, logs) to a central service like SumoLogic.
+* **Monitoring Web Server QPS**: To monitor Queries Per Second (QPS), you can configure the monitoring tool to parse the web server's access logs and count the number of HTTP requests processed per second.
+
+## Issues with this infrastructure:
+* **SSL Termination at Load Balancer**: If SSL is terminated at the load balancer, the traffic between the load balancer and the application servers is unencrypted, which could be a security risk in the internal network.
+* **Single Writable MySQL Server**: Having only one server capable of accepting writes is a bottleneck for scalability and remains a Single Point of Failure (SPOF) for all data modification tasks.
+* **Identical Components on All Servers**: Running the database, web server, and application server on the same machine causes resource contention. They all compete for the same CPU, RAM, and Disk I/O, which can lead to performance degradation.
