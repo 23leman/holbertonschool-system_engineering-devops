@@ -1,0 +1,17 @@
+# 3-scale_up
+
+## Infrastructure Overview
+This infrastructure is a highly available, scaled-up distributed system. It separates the web, application, and database layers into their own dedicated servers to maximize performance and redundancy.
+
+## Why additional elements were added:
+
+* **Additional Load Balancer (HAproxy Cluster)**: A second load balancer is added and configured as a cluster with the first one (using tools like Keepalived). This eliminates the Load Balancer as a Single Point of Failure (SPOF). If the primary load balancer fails, the secondary one automatically takes over the traffic.
+* **Separation of Components (Split Layers)**: 
+    * **Web Server Layer**: Dedicated servers only handle incoming HTTP/HTTPS requests and serve static content.
+    * **Application Server Layer**: Dedicated servers only execute the business logic (codebase). 
+    * **Database Layer**: Dedicated servers only manage data storage and queries.
+    * **Reason**: Splitting these components prevents **resource contention**. Each service now has its own dedicated CPU, RAM, and Disk I/O, preventing a heavy database query from slowing down the web server or the application logic.
+* **Additional Server**: Adding more servers allows the infrastructure to handle a much higher volume of traffic and provides better fault tolerance across the entire stack.
+
+## Scalability Benefit:
+By having this multi-tier architecture, we can scale each layer independently. For example, if we have more web traffic but the database is fine, we can just add more web servers without needing to pay for more database servers.
