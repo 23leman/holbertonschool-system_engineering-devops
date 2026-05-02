@@ -1,0 +1,18 @@
+# 0-simple_web_stack
+
+## Infrastructure Overview
+This is a one-server web infrastructure for www.foobar.com. The design includes a user accessing the site through a domain name, which points to a specific server IP address.
+
+## Specifics about this infrastructure:
+* **Server**: A computer program or device that provides functionality for other programs or devices, called "clients".
+* **Domain Name**: foobar.com is the human-friendly name that maps to the server's IP address.
+* **DNS Record**: The 'www' in 'www.foobar.com' is an **A record** because it points directly to the IP address 8.8.8.8.
+* **Web Server (Nginx)**: Software that handles HTTP requests and serves web pages to the browser.
+* **Application Server**: Executes the application logic (code) and communicates between the web server and the database.
+* **Database (MySQL)**: Organizes and stores information (data) so it can be easily accessed and managed.
+* **Communication**: The server uses the **TCP/IP** protocol suite to communicate with the user's computer.
+
+## Issues with this infrastructure:
+* **SPOF (Single Point of Failure)**: If this one server fails, the entire website goes down.
+* **Downtime for Maintenance**: The server must be restarted to deploy new code or updates, causing the site to be unreachable.
+* **Scalability**: A single server cannot handle a high volume of traffic spikes and cannot be easily scaled without adding more servers.
