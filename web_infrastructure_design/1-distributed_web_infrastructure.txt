@@ -1,0 +1,25 @@
+# 1-distributed_web_infrastructure
+
+## Infrastructure Overview
+This design expands the infrastructure to a three-server setup to improve availability and handle more traffic. It introduces a Load Balancer (HAproxy) and a second application server, along with a Database Cluster.
+
+## Why additional elements were added:
+* **Load Balancer (HAproxy)**: Added to distribute incoming web traffic across multiple servers. This prevents a single server from being overwhelmed and increases the availability of the application.
+* **Second Application Server**: Added to provide redundancy. If one server fails, the other can still serve the website, reducing the chance of total downtime.
+
+## Load Balancer Specifics:
+* **Distribution Algorithm**: I am using the **Round Robin** algorithm. It works by rotating each new request to the next server in line (Server A, then Server B, then back to A). This ensures an equal distribution of requests.
+* **Setup Type**: This is an **Active-Active** setup. In this configuration, both servers are active and handling traffic simultaneously. In an **Active-Passive** setup, only one server handles traffic while the other remains idle, only taking over if the primary fails.
+
+## Database Primary-Replica (Master-Slave) Cluster:
+* **How it works**: Data is written to the **Primary** node, which then synchronizes those changes to the **Replica** node. 
+* **Primary vs. Replica Nodes**: 
+    * The **Primary** node handles all **Write** operations (inserting or updating data).
+    * The **Replica** node handles **Read** operations (viewing data), which reduces the load on the Primary node.
+
+## Issues with this infrastructure:
+* **SPOF (Single Point of Failure)**: Although we have two application servers, the **Load Balancer (HAproxy)** itself is now a single point of failure. If it goes down, the whole site is unreachable. The Primary Database is also a SPOF for write operations.
+* **Security Issues**:
+    * **No Firewall**: There is no firewall to block unauthorized incoming traffic, making the servers vulnerable to attacks.
+    * **No HTTPS**: Traffic is sent over plain HTTP, meaning data is not encrypted and can be intercepted.
+* **No Monitoring**: There is no system in place to alert us if a server is down or if resources (CPU/RAM) are running low.
